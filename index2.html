@@ -5,17 +5,57 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Ristinolla</title>
   <link rel="stylesheet" type="text/css" href="css/table.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing:border-box;
+}
+
+.left {
+  background-color:#2196F3;
+  padding:20px;
+  float:left;
+  width:30%; /* The width is 20%, by default */
+}
+
+.main {
+  /*background-color:"white";*/
+  padding:10px;
+  float:left;
+  width:40%; /* The width is 60%, by default */
+}
+
+.right {
+  /*background-color:#4CAF50;*/
+  padding:20px;
+  float:left;
+  width:30%; /* The width is 20%, by default */
+}
+
+/* Use a media query to add a break point at 800px: */
+@media screen and (max-width:800px) {
+
+  .left {
+      width: 100%;
+      height: 0%;
+  }
+  .main, .right {
+    width:100%; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+</style>
 </head>
 <body>
-  <table align="center">
-    <tr>
-      <td>
-        <canvas id="board" width="700" height="700"></canvas>
-      </td>
-    <!--/tr>
-    <tr-->
-      <td id="state" align="center">
-        <fieldset id="gamestatus">
+<div class="left">
+    <p>Ristinolla</p>
+</div>
+
+<div class="main" align="center" >
+	<canvas id="board" width="700" height="700"></canvas>
+</div>
+
+<div class="right">
+    <fieldset>
           <legend>Pelitilanne</legend>
 
           <textarea id="talk" rows="2" cols="30"></textarea>
@@ -35,16 +75,45 @@
 
           <br>
 
-          <button class="myButton" id="new">Uusi peli</button>
-          <button class="myButton" id="last">Viimeisin siirto</button>
-
+          <button id="new">Uusi peli</button>
+          <button id="last">Viimeisin siirto</button>
       </fieldset>
+</div>
+  <!--table align="center">
+    <tr>
+      <td>
+        <canvas id="board" width="700" height="700"></canvas>
       </td>
     </tr>
     <tr>
-        <td id="state2"></td>
+      <td align="center">
+        <fieldset>
+          <legend>Pelitilanne</legend>
+
+          <textarea id="talk" rows="2" cols="30"></textarea>
+
+          <br>
+
+          <table class="scores">
+            <tr>
+              <th>X</th>
+              <th>O</th>
+            </tr>
+            <tr>
+              <td id="xscore" class="scores"></td>
+              <td id="oscore" class="scores"></td>
+            </tr>
+          </table>
+
+          <br>
+
+          <button id="new">Uusi peli</button>
+          <button id="last">Viimeisin siirto</button>
+
+        </fieldset>
+      </td>
     </tr>
-  </table>
+  </table-->
 
   <!--canvas id="board" width="500" height="500"></canvas>
   <fieldset>

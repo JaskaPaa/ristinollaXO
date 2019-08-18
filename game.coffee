@@ -71,9 +71,5 @@ class @Game extends Backbone.Model
 
 new GameView({model: new Game})
 
-
-
-
-
 Backbone.sync = (method, model, success, error) ->
   success()
