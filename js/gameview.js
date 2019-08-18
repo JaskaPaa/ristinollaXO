@@ -239,6 +239,7 @@
       //@undelegateEvents()
       //@delegateEvents()
       //console.log "klick"
+      //@showLastMove(4)
       newClick(e) {
         this.model.initialize();
         return $('#new').prop('disabled', true);

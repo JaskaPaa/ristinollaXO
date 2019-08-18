@@ -198,6 +198,7 @@ class @GameView extends Backbone.View
     #@undelegateEvents()
     #@delegateEvents()
     #console.log "klick"
+    #@showLastMove(4)
 
   newClick: (e) ->
     @model.initialize()
