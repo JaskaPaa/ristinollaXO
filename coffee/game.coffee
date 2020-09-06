@@ -4,15 +4,6 @@ sleep = (ms) ->
   start = new Date().getTime()
   continue while new Date().getTime() - start < ms
 
-class Engine
-
-  constructor: () ->
-
-  genMove: () ->
-    console.log "sleep starting..."
-    sleep 3000
-    return [5,7]
-
 
 class @Game extends Backbone.Model
   next_starter: "X"
@@ -20,14 +11,11 @@ class @Game extends Backbone.Model
   initialize: ->
     @set {position: new Position(@next_starter)}
     @next_starter = if @next_starter == "X" then "O" else "X"
-    console.log @next_starter
     @set {update: true}
-    @engine = new Engine
     @thinking = false
     @set {winner: false }
-    #console.log @get('position')
     @set {update: !@get('update')}
-    #console.log @wins
+
 
 
   move: (x,y,c) ->
@@ -47,7 +35,6 @@ class @Game extends Backbone.Model
       return
 
     if pos.turn == "O"
-      #setTimeout ( => @runEngine() ), 1000
       @thinking = true
       pos.make_move()
       @set {position: pos}
@@ -57,17 +44,7 @@ class @Game extends Backbone.Model
         @wins.O++
       @set {update: !@get('update')}
 
-  runEngine: ->
-    console.log "running engine..."
-    if @get('position').turn == "X" then return
-    @thinking = true
-    move = @engine.genMove()
-    @thinking = false
-    @move move[0], move[1], "O"
 
-
-#game = new Game
-#game_view = new GameView({model: game})
 
 new GameView({model: new Game})
 

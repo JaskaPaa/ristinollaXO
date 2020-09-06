@@ -33,19 +33,6 @@ class @Position
 
     return true
 
-  print: () ->
-
-    for i in @sq
-      str = ""
-      for j in i
-        if parseInt(j) < 0
-          str = str[...-1] # poista välilyönti
-          str += j + " "
-        else
-          str += j + " "
-
-      console.log str
-
 Position::from_to = (x,y, step_x, step_y, len) ->
   str = ""
   for i in [0...len]
@@ -56,7 +43,7 @@ Position::from_to = (x,y, step_x, step_y, len) ->
 
   return str
 
-Position::row_value3 = (str,c) ->
+Position::row_value = (str,c) ->
   four = c+c+c+c
   three = c+c+c
   three2 = c+c+'-'+c
@@ -93,22 +80,19 @@ Position::row_value3 = (str,c) ->
   return 0
 
 Position::square_value = (x,y) ->
-  #left = if x - 5 < 0 then 0 else x - 5
-  #top = if y - 5 < 0 then 0 else y - 5
-  #right = if x + 5 >= 20 then 19 else x + 5
+
   total = 0
   for c in ["X","O"]
     @sq[x][y] = c
     str = @from_to(x, y-5, 0, +1, 11) #vertical
-    total += @row_value3(str, c)
+    total += @row_value(str, c)
     str = @from_to(x-5, y, +1, 0, 11) #horizontal
-    total += @row_value3(str, c)
+    total += @row_value(str, c)
     str = @from_to(x-5, y-5, +1, +1, 11) #diagonal
-    total += @row_value3(str, c)
+    total += @row_value(str, c)
     str = @from_to(x+5, y-5, -1, +1, 11) #diagonal
-    total += @row_value3(str, c)
+    total += @row_value(str, c)
 
-  #console.log total
   @sq[x][y] = "-" # undo move
   return total
 
@@ -132,7 +116,6 @@ Position::check_five = (x,y) ->
   if (x-5)<=0 or (y-5)<=0
     xs = if x>y then x-y else 0
     ys = if y>x then y-x else 0
-    #console.log "xs: " + xs + "ys: " + ys
 
   str = @from_to(x-5, y-5, +1, +1, 11) #diagonal
   if (i = str.search(c+c+c+c+c)) != -1
@@ -145,7 +128,6 @@ Position::check_five = (x,y) ->
   if (x+5) >= 19 or (y-5) <= 0
     xs = if (19-x)>y then x+y else 19
     ys = if y>(19-x) then y-(19-x) else 0
-    #console.log "xs: " + xs + "ys: " + ys
 
   str = @from_to(x+5, y-5, -1, +1, 11) #diagonal
   if (i = str.search(c+c+c+c+c)) != -1
@@ -155,7 +137,7 @@ Position::check_five = (x,y) ->
 
 
 Position::make_move = () ->
-  console.log @negamax(0, this) + " ============"
+
   moves = []
   for i in [0...@w]
     for j in [0...@h]
@@ -164,11 +146,10 @@ Position::make_move = () ->
 
   # sort bests (max values) to be first
   moves.sort((a,b) -> b.value - a.value)
-  #console.log max + " " + best_move
-  console.log moves
+
   @move2(moves[0].move[0],moves[0].move[1])
-  
-  
+
+
 Position::position_value = () ->
   moves = []
   for i in [0...@w]
@@ -178,48 +159,8 @@ Position::position_value = () ->
 
   # sort bests (max values) to be first
   moves.sort((a,b) -> b.value - a.value)
-  #console.log max + " " + best_move
+
   return moves[0].value
-
-Position::negamaxW = (depth) ->
-
-  f = if @turn == "O" then 1 else -1
-
-  if depth == 0 or @check_five(@last_move[0],@last_move[1])
-    return f * @position_value()
-
-  newPos = clone(this) # $.extend(true, {}, this)
-  bestVal = -10000000
-  for i in [0...@w]
-    for j in [0...@h]
-      if @sq[i][j] == '-'
-        newPos.move2(i,j)
-        val = -newPos.negamax(depth-1)
-        bestVal = Math.max(val, bestVal)
-        #console.log val
-
-  return bestVal
-
-
-Position::negamax = (depth, pos) ->
-
-  f = if @turn == "O" then 1 else -1
-
-  if depth == 0 or @check_five(@last_move[0],@last_move[1])
-    return f * @position_value()
-
-  bestVal = -10000000
-  for i in [0...@w]
-    for j in [0...@h]
-      if @sq[i][j] == '-'
-        newPos = clone(this)
-        newPos.move2(i,j)
-        val = -newPos.negamax(depth-1, newPos)
-        bestVal = Math.max(val, bestVal)
-        #console.log val
-
-  return bestVal
-
 
 
 arrayEqual = (a, b) ->
@@ -231,7 +172,7 @@ clone = (obj) ->
     return obj
 
   if obj instanceof Date
-    return new Date(obj.getTime()) 
+    return new Date(obj.getTime())
 
   if obj instanceof RegExp
     flags = ''
@@ -239,7 +180,7 @@ clone = (obj) ->
     flags += 'i' if obj.ignoreCase?
     flags += 'm' if obj.multiline?
     flags += 'y' if obj.sticky?
-    return new RegExp(obj.source, flags) 
+    return new RegExp(obj.source, flags)
 
   newInstance = new obj.constructor()
 
