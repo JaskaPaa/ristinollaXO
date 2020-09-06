@@ -44,9 +44,7 @@ Position::from_to = (x,y, step_x, step_y, len) ->
   return str
 
 Position::row_value = (str,c) ->
-  four = c+c+c+c
-  three = c+c+c
-  three2 = c+c+'-'+c
+
   str = str.replace(/_/g,'-')
 
   f = if c == "O" then 1 else 0
