@@ -149,6 +149,7 @@ Position::make_move = () ->
 
 
 Position::position_value = () ->
+    
   moves = []
   for i in [0...@w]
     for j in [0...@h]
